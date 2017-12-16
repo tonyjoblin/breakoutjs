@@ -1,0 +1,91 @@
+<!--  -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Breakout js game tutorial</title>
+    <style>
+        * { padding: 0; margin: 0; }
+        canvas { background: #eee; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="480" height="320"></canvas>
+    
+    <script>
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+
+        var x = canvas.width / 2;
+        var y = canvas.height - 30;
+        const ballRadius = 10;
+        var dx = 2;
+        var dy = -2;
+
+        function drawRectangle() {
+            ctx.beginPath();
+            ctx.rect(20, 40, 50, 50);
+            ctx.fillStyle = "#FF0000";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawCircle(x, y, radius, colour) {
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = colour;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawBall(x, y) {
+            drawCircle(x, y, ballRadius, "#0095DD");
+        }
+
+        function moveBall() {
+            x += dx;
+            y += dy;
+        }
+
+        function ballHitLeftWall() {
+            return x < 0;
+        }
+
+        function ballHitRightWall() {
+            return canvas.width < x + ballRadius;
+        }
+
+        function ballHitTopWall() {
+            return y < 0;
+        }
+
+        function ballHitBottomWall() {
+            return canvas.height < y + ballRadius;
+        }
+
+        function bounceBall() {
+            if (ballHitLeftWall() || ballHitRightWall()) {
+                dx = -dx;
+                x += dx;
+            }
+            if (ballHitTopWall() || ballHitBottomWall()) {
+                dy = -dy;
+                y += dy;
+            }
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function draw() {
+            clearCanvas();
+            moveBall();
+            bounceBall();
+            drawBall(x, y);
+        }
+
+        setInterval(draw, 10);
+    </script>
+</body>
+</html>
