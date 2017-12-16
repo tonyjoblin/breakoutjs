@@ -22,6 +22,21 @@
         var dx = 2;
         var dy = -2;
 
+        const paddleHeight = 10;
+        const paddleWidth = 75;
+        let paddleX = (canvas.width - paddleWidth)/2;
+
+        var rightPressed = false;
+        var leftPressed = false;
+
+        function drawPaddle() {
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, canvas.height);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+        }
+
         function drawRectangle() {
             ctx.beginPath();
             ctx.rect(20, 40, 50, 50);
@@ -78,13 +93,43 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
+        function keyDownHandler(e) {
+            if (e.keyCode == 39) {
+                rightPressed = true;
+            } else if (e.keyCode == 37) {
+                leftPressed = true;
+            }
+        }
+
+        function keyUpHandler(e) {
+            if (e.keyCode == 39) {
+                rightPressed = false;
+            } else if (e.keyCode == 37) {
+                leftPressed = false;
+            }
+        }
+
+        function movePaddle() {
+            const paddleMove = 7;
+            if (rightPressed && paddleX < canvas.width - paddleWidth) {
+                paddleX += paddleMove;
+            }
+            else if (leftPressed && paddleX > 0) {
+                paddleX -= paddleMove;
+            }
+        }
+
         function draw() {
             clearCanvas();
             moveBall();
             bounceBall();
             drawBall(x, y);
+            movePaddle();
+            drawPaddle();
         }
 
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
         setInterval(draw, 10);
     </script>
 </body>
