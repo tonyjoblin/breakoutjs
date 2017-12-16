@@ -63,7 +63,7 @@
         }
 
         function ballHitLeftWall() {
-            return x < 0;
+            return x - ballRadius < 0;
         }
 
         function ballHitRightWall() {
@@ -71,7 +71,7 @@
         }
 
         function ballHitTopWall() {
-            return y < 0;
+            return y - ballRadius < 0;
         }
 
         function ballHitBottomWall() {
@@ -126,13 +126,23 @@
             }
         }
 
+        function checkForBallBouncePaddle() {
+            if (y + ballRadius > canvas.height - paddleHeight) {
+                if (x > paddleX && x < paddleX + paddleWidth) {
+                    dy = -dy;
+                    y += dy;
+                }
+            }
+        }
+
         function draw() {
             clearCanvas();
             moveBall();
             bounceBall();
-            drawBall(x, y);
             checkGameOver();
             movePaddle();
+            checkForBallBouncePaddle();
+            drawBall(x, y);
             drawPaddle();
         }
 
