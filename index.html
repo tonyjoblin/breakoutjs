@@ -75,7 +75,7 @@
         }
 
         function ballHitBottomWall() {
-            return canvas.height < y + ballRadius;
+            return canvas.height < y;
         }
 
         function bounceBall() {
@@ -83,7 +83,7 @@
                 dx = -dx;
                 x += dx;
             }
-            if (ballHitTopWall() || ballHitBottomWall()) {
+            if (ballHitTopWall()) {
                 dy = -dy;
                 y += dy;
             }
@@ -119,11 +119,19 @@
             }
         }
 
+        function checkGameOver() {
+            if (ballHitBottomWall()) {
+                alert("GAME OVER");
+                document.location.reload();
+            }
+        }
+
         function draw() {
             clearCanvas();
             moveBall();
             bounceBall();
             drawBall(x, y);
+            checkGameOver();
             movePaddle();
             drawPaddle();
         }
