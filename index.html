@@ -11,7 +11,7 @@
 </head>
 <body>
     <canvas id="myCanvas" width="480" height="320"></canvas>
-    
+
     <script>
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
@@ -29,18 +29,48 @@
         var rightPressed = false;
         var leftPressed = false;
 
+        var brickRowCount = 3;
+        var brickColumnCount = 5;
+        var brickWidth = 75;
+        var brickHeight = 20;
+        var brickPadding = 10;
+        var brickOffsetTop = 30;
+        var brickOffsetLeft = 30;
+
+        var bricks = [];
+
+        function createBrickWall() {
+          for(c = 0; c < brickColumnCount; c++) {
+            bricks[c] = [];
+            for(r = 0; r < brickRowCount; r++) {
+              bricks[c][r] = {
+                x: (c * (brickWidth + brickPadding)) + brickOffsetLeft,
+                y: (r * (brickHeight + brickPadding)) + brickOffsetTop
+              };
+            }
+          }
+        }
+
+        function drawBrickWall() {
+          for(c = 0; c < brickColumnCount; c++) {
+            for(r = 0; r < brickRowCount; r++) {
+              drawBrick(bricks[c][r]);
+            }
+          }
+        }
+
+        function drawBrick(brick) {
+          ctx.beginPath();
+          ctx.rect(brick.x, brick.y, brickWidth, brickHeight);
+          ctx.fillStyle = "#0095DD";
+          ctx.fill();
+          ctx.closePath();
+        }
+
         function drawPaddle() {
             ctx.beginPath();
             ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, canvas.height);
             ctx.fillStyle = "#0095DD";
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        function drawRectangle() {
-            ctx.beginPath();
-            ctx.rect(20, 40, 50, 50);
-            ctx.fillStyle = "#FF0000";
             ctx.fill();
             ctx.closePath();
         }
@@ -137,6 +167,7 @@
 
         function draw() {
             clearCanvas();
+            drawBrickWall();
             moveBall();
             bounceBall();
             checkGameOver();
@@ -146,6 +177,7 @@
             drawPaddle();
         }
 
+        createBrickWall();
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
         setInterval(draw, 10);
