@@ -45,26 +45,49 @@
             for(r = 0; r < brickRowCount; r++) {
               bricks[c][r] = {
                 x: (c * (brickWidth + brickPadding)) + brickOffsetLeft,
-                y: (r * (brickHeight + brickPadding)) + brickOffsetTop
+                y: (r * (brickHeight + brickPadding)) + brickOffsetTop,
+                destroyed: false
               };
             }
           }
         }
 
-        function drawBrickWall() {
-          for(c = 0; c < brickColumnCount; c++) {
-            for(r = 0; r < brickRowCount; r++) {
-              drawBrick(bricks[c][r]);
+        function brickIterator(wall, func) {
+            for(c = 0; c < brickColumnCount; c++) {
+                for(r = 0; r < brickRowCount; r++) {
+                    func(wall[c][r]);
+                }
             }
-          }
+        }
+
+        function drawBrickWall() {
+            brickIterator(bricks, drawBrick);
+        }
+
+        function checkForBrickCollision() {
+            brickIterator(bricks, checkBrickCollision);
+        }
+
+        function checkBrickCollision(brick) {
+            if (!brick.destroyed) {
+                if (brick.x <= x && x <= brick.x + brickWidth) {
+                    if (brick.y <= y && y < brick.y + brickHeight) {
+                        dy = -dy;
+                        y += dy;
+                        brick.destroyed = true;
+                    }
+                }
+            }
         }
 
         function drawBrick(brick) {
-          ctx.beginPath();
-          ctx.rect(brick.x, brick.y, brickWidth, brickHeight);
-          ctx.fillStyle = "#0095DD";
-          ctx.fill();
-          ctx.closePath();
+          if (!brick.destroyed) {
+            ctx.beginPath();
+            ctx.rect(brick.x, brick.y, brickWidth, brickHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+          }
         }
 
         function drawPaddle() {
@@ -170,6 +193,7 @@
             drawBrickWall();
             moveBall();
             bounceBall();
+            checkForBrickCollision();
             checkGameOver();
             movePaddle();
             checkForBallBouncePaddle();
