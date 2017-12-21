@@ -1,0 +1,26 @@
+{
+  "name": "breakoutjs",
+  "version": "0.1.0",
+  "description": "MDN Breakout Tutorial",
+  "main": "breakout.js",
+  "scripts": {
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tonyjoblin/breakoutjs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tonyjoblin/breakoutjs/issues"
+  },
+  "homepage": "https://github.com/tonyjoblin/breakoutjs#readme",
+  "devDependencies": {
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.1",
+    "karma-phantomjs-launcher": "^1.0.4"
+  }
+}

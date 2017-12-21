@@ -9,7 +9,7 @@ var dy = -2;
 
 const paddleHeight = 10;
 const paddleWidth = 75;
-let paddleX = (canvas.width - paddleWidth)/2;
+var paddleX = (canvas.width - paddleWidth)/2;
 
 var rightPressed = false;
 var leftPressed = false;
@@ -207,7 +207,9 @@ function draw() {
     checkForVictory();
 }
 
-createBrickWall();
-document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
-setInterval(draw, 10);
+function main() {
+  createBrickWall();
+  document.addEventListener("keydown", keyDownHandler, false);
+  document.addEventListener("keyup", keyUpHandler, false);
+  setInterval(draw, 10);
+}
