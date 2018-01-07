@@ -1,11 +1,7 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
-var x = canvas.width / 2;
-var y = canvas.height - 30;
-const ballRadius = 10;
-var dx = 2;
-var dy = -2;
+var ball = ballFactory(canvas.width / 2, canvas.height - 30);
 
 const paddleHeight = 10;
 const paddleWidth = 75;
@@ -18,8 +14,6 @@ var score = 0;
 
 var brickRowCount = 3;
 var brickColumnCount = 5;
-var brickWidth = 75;
-var brickHeight = 20;
 var brickPadding = 10;
 var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
@@ -27,16 +21,16 @@ var brickOffsetLeft = 30;
 var bricks = [];
 
 function createBrickWall() {
-  for(c = 0; c < brickColumnCount; c++) {
-    bricks[c] = [];
-    for(r = 0; r < brickRowCount; r++) {
-      bricks[c][r] = {
-        x: (c * (brickWidth + brickPadding)) + brickOffsetLeft,
-        y: (r * (brickHeight + brickPadding)) + brickOffsetTop,
-        destroyed: false
-      };
+    const width = 75;
+    const height = 20;
+    for(c = 0; c < brickColumnCount; c++) {
+        bricks[c] = [];
+        for(r = 0; r < brickRowCount; r++) {
+            var x = c * (width + brickPadding) + brickOffsetLeft;
+            var y = r * (height + brickPadding) + brickOffsetTop;
+            bricks[c][r] = brickFactory(x, y);
+        }
     }
-  }
 }
 
 function brickIterator(wall, func) {
@@ -52,7 +46,11 @@ function drawBrickWall() {
 }
 
 function checkForBrickCollision() {
-    brickIterator(bricks, checkBrickCollision);
+    brickIterator(bricks, function(brick) {
+        if (checkBrickCollision(brick, ball)) {
+            score += 5;
+        }
+    });
 }
 
 function checkForVictory() {
@@ -65,23 +63,10 @@ function checkForVictory() {
     }
 }
 
-function checkBrickCollision(brick) {
-    if (!brick.destroyed) {
-        if (brick.x <= x && x <= brick.x + brickWidth) {
-            if (brick.y <= y && y < brick.y + brickHeight) {
-                dy = -dy;
-                y += dy;
-                brick.destroyed = true;
-                score += 5;
-            }
-        }
-    }
-}
-
 function drawBrick(brick) {
   if (!brick.destroyed) {
     ctx.beginPath();
-    ctx.rect(brick.x, brick.y, brickWidth, brickHeight);
+    ctx.rect(brick.x, brick.y, brick.width, brick.height);
     ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
@@ -110,39 +95,43 @@ function drawCircle(x, y, radius, colour) {
     ctx.closePath();
 }
 
-function drawBall(x, y) {
-    drawCircle(x, y, ballRadius, "#0095DD");
+function drawBall(ball) {
+    drawCircle(ball.x, ball.y, ball.radius, "#0095DD");
 }
 
 function moveBall() {
-    x += dx;
-    y += dy;
+    ball.x += ball.dx;
+    ball.y += ball.dy;
 }
 
 function ballHitLeftWall() {
-    return x - ballRadius < 0;
+    return ball.x - ball.radius < 0;
 }
 
 function ballHitRightWall() {
-    return canvas.width < x + ballRadius;
+    return canvas.width < ball.x + ball.radius;
 }
 
 function ballHitTopWall() {
-    return y - ballRadius < 0;
+    return ball.y - ball.radius < 0;
 }
 
 function ballHitBottomWall() {
-    return canvas.height < y;
+    return canvas.height < ball.y;
+}
+
+function ballBounceVertical(ball) {
+    ball.dy = -ball.dy;
+    ball.y += ball.dy;
 }
 
 function bounceBall() {
     if (ballHitLeftWall() || ballHitRightWall()) {
-        dx = -dx;
-        x += dx;
+        ball.dx = -ball.dx;
+        ball.x += ball.dx;
     }
     if (ballHitTopWall()) {
-        dy = -dy;
-        y += dy;
+        ballBounceVertical(ball);
     }
 }
 
@@ -184,10 +173,9 @@ function checkGameOver() {
 }
 
 function checkForBallBouncePaddle() {
-    if (y + ballRadius > canvas.height - paddleHeight) {
-        if (x > paddleX && x < paddleX + paddleWidth) {
-            dy = -dy;
-            y += dy;
+    if (ball.y + ball.radius > canvas.height - paddleHeight) {
+        if (ball.x > paddleX && ball.x < paddleX + paddleWidth) {
+            ballBounceVertical(ball);
         }
     }
 }
@@ -201,7 +189,7 @@ function draw() {
     checkGameOver();
     movePaddle();
     checkForBallBouncePaddle();
-    drawBall(x, y);
+    drawBall(ball);
     drawPaddle();
     drawScore();
     checkForVictory();
