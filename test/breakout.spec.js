@@ -31,6 +31,7 @@ describe("ball colides with a brick", function(){
     expect(hadCollision).toBeTruthy();
   });
 });
+
 describe("brick factory", function(){
   const brick = brickFactory(1, 2);
   it("returns a brick object", function(){
@@ -57,6 +58,7 @@ describe("brick factory", function(){
     expect(brick.destroyed).toBe(false);
   });
 });
+
 describe("ball factory", function(){
   const ball = ballFactory(1, 2);
   it("returns a ball object", function(){
@@ -83,6 +85,7 @@ describe("ball factory", function(){
     expect(ball.radius).toBe(10);
   });
 });
+
 describe("ballBounceVertical", function(){
   const dy = 5;
   var ball;
@@ -97,5 +100,17 @@ describe("ballBounceVertical", function(){
   it("moves ball in new vertical direction", function(){
     ballBounceVertical(ball);
     expect(ball.y).toBe(95);
+  });
+});
+
+describe("moveBall", function(){
+  var ball;
+  beforeEach(function(){
+    ball = ballFactory(100, 100);
+  });
+  it("moves the ball by dx & dy", function(){
+    moveBall(ball);
+    expect(ball.x).toBe(102);
+    expect(ball.y).toBe(98);
   });
 });

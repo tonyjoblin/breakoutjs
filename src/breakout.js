@@ -36,3 +36,8 @@ function ballBounceVertical(ball) {
   ball.dy = -ball.dy;
   ball.y += ball.dy;
 }
+
+function moveBall(ball) {
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+}

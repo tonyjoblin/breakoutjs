@@ -99,11 +99,6 @@ function drawBall(ball) {
     drawCircle(ball.x, ball.y, ball.radius, "#0095DD");
 }
 
-function moveBall() {
-    ball.x += ball.dx;
-    ball.y += ball.dy;
-}
-
 function ballHitLeftWall() {
     return ball.x - ball.radius < 0;
 }
@@ -178,7 +173,7 @@ function checkForBallBouncePaddle() {
 function draw() {
     clearCanvas();
     drawBrickWall();
-    moveBall();
+    moveBall(ball);
     bounceBall();
     checkForBrickCollision();
     checkGameOver();
