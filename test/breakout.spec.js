@@ -1,15 +1,15 @@
 describe("ball colides with a brick", function(){
+  var brick, ball;
+  beforeEach(function(){
+    brick = brickFactory(100, 100);
+    ball = ballFactory(120, 110);
+  });
   it("the brick is destroyed", function(){
-    var brick = brickFactory(100, 100);
-    var ball = ballFactory(120, 110);
-
     checkBrickCollision(brick, ball);
 
     expect(brick.destroyed).toBe(true);
   });
   it("the ball bounces off the brick", function(){
-    var brick = brickFactory(100, 100);
-    var ball = ballFactory(120, 110);
     ball.dy = 5;
 
     checkBrickCollision(brick, ball);
@@ -18,15 +18,17 @@ describe("ball colides with a brick", function(){
     expect(ball.y).toBe(105);
   });
   it("ball cannot collide with a brick that is already destroyed", function(){
-    var brick = brickFactory(100, 100);
     brick.destroyed = true;
-    var ball = ballFactory(120, 110);
     ball.dy = 5;
 
     checkBrickCollision(brick, ball);
 
     expect(ball.dy).toBe(5);
     expect(ball.y).toBe(110);
+  });
+  it("should return true when a collision occurs", function(){
+    var hadCollision = checkBrickCollision(brick, ball);
+    expect(hadCollision).toBeTruthy();
   });
 });
 describe("brick factory", function(){
@@ -79,5 +81,21 @@ describe("ball factory", function(){
     expect(ball.radius).toBeDefined();
     expect(typeof ball.radius).toBe("number");
     expect(ball.radius).toBe(10);
+  });
+});
+describe("ballBounceVertical", function(){
+  const dy = 5;
+  var ball;
+  beforeEach(function(){
+    ball = ballFactory(100, 100);
+    ball.dy = dy;
+  });
+  it("changes direction of veritical movement", function(){
+    ballBounceVertical(ball);
+    expect(ball.dy).toBe(-dy);
+  });
+  it("moves ball in new vertical direction", function(){
+    ballBounceVertical(ball);
+    expect(ball.y).toBe(95);
   });
 });

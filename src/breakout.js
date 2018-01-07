@@ -19,13 +19,20 @@ function ballFactory(x, y) {
 }
 
 function checkBrickCollision(brick, ball) {
+  var hadCollision = false;
   if (!brick.destroyed) {
     if (brick.x <= ball.x && ball.x <= brick.x + brick.width) {
         if (brick.y <= ball.y && ball.y < brick.y + brick.height) {
-            ball.dy = -ball.dy;
-            ball.y += ball.dy;
-            brick.destroyed = true;
+          ballBounceVertical(ball);
+          brick.destroyed = true;
+          hadCollision = true;
         }
     }
   }
+  return hadCollision;
+}
+
+function ballBounceVertical(ball) {
+  ball.dy = -ball.dy;
+  ball.y += ball.dy;
 }

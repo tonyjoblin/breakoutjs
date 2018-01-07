@@ -120,11 +120,6 @@ function ballHitBottomWall() {
     return canvas.height < ball.y;
 }
 
-function ballBounceVertical(ball) {
-    ball.dy = -ball.dy;
-    ball.y += ball.dy;
-}
-
 function bounceBall() {
     if (ballHitLeftWall() || ballHitRightWall()) {
         ball.dx = -ball.dx;
