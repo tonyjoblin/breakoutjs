@@ -124,3 +124,14 @@ describe("createBrickWall", function(){
     }
   });
 });
+
+describe("brickIterator", function() {
+  it("applies function to each brick", function() {
+    var wall = [];
+    wall[0] = [];
+    wall[0][0] = brickFactory(100, 100);
+    var count = 0;
+    brickIterator(wall, function(brick) { count = count + 1; });
+    expect(count).toBe(1);
+  });
+});

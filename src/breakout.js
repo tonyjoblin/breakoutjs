@@ -62,3 +62,9 @@ function createBrickWall() {
   }
   return bricks;
 }
+
+function brickIterator(wall, func) {
+  wall.forEach(function(row) {
+    row.forEach(func);
+  });
+}
