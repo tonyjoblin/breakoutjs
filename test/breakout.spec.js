@@ -135,3 +135,22 @@ describe("brickIterator", function() {
     expect(count).toBe(1);
   });
 });
+
+describe("checkForBrickCollision", function(){
+  var wall = null;
+  beforeEach(function() {
+    wall = [];
+    wall[0] = [];
+    wall[0][0] = brickFactory(100, 100);
+  });
+  it("returns new score", function() {
+    var ball = ballFactory(110, 110);
+    var newScore = checkForBrickCollision(wall, ball, 0);
+    expect(newScore).toBe(5);
+  });
+  it("marks colided bricks as destroyed", function() {
+    var ball = ballFactory(110, 110);
+    var newScore = checkForBrickCollision(wall, ball, 0);
+    expect(wall[0][0].destroyed).toBeTruthy();
+  });
+});

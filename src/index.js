@@ -18,14 +18,6 @@ function drawBrickWall() {
     brickIterator(bricks, drawBrick);
 }
 
-function checkForBrickCollision() {
-    brickIterator(bricks, function(brick) {
-        if (checkBrickCollision(brick, ball)) {
-            score += 5;
-        }
-    });
-}
-
 function checkForVictory() {
     var bricksDestroyed = 0;
     const columns = bricks.length;
@@ -114,7 +106,7 @@ function draw() {
     drawBrickWall();
     moveBall(ball);
     bounceBall();
-    checkForBrickCollision();
+    score = checkForBrickCollision(bricks, ball, score);
     checkGameOver();
     movePaddle();
     checkForBallBouncePaddle();

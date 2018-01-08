@@ -68,3 +68,13 @@ function brickIterator(wall, func) {
     row.forEach(func);
   });
 }
+
+function checkForBrickCollision(wall, ball, oldScore) {
+  var newScore = oldScore;
+  brickIterator(wall, function(brick) {
+      if (checkBrickCollision(brick, ball)) {
+        newScore += 5;
+      }
+  });
+  return newScore;
+}
