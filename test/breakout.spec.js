@@ -154,3 +154,21 @@ describe("checkForBrickCollision", function(){
     expect(wall[0][0].destroyed).toBeTruthy();
   });
 });
+
+describe("checkForVictory", function() {
+  var wall = null;
+  beforeEach(function() {
+    wall = [];
+    wall[0] = [];
+    wall[0][0] = brickFactory(100, 100);
+  });
+  it("returns false is some bricks are left", function() {
+    const winner = checkForVictory(wall);
+    expect(winner).toBeFalsy();
+  });
+  it("returns true if all bricks destroyed", function() {
+    wall[0][0].destroyed = true;
+    const winner = checkForVictory(wall);
+    expect(winner).toBeTruthy();
+  });
+});

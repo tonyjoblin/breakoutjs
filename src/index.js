@@ -18,18 +18,6 @@ function drawBrickWall() {
     brickIterator(bricks, drawBrick);
 }
 
-function checkForVictory() {
-    var bricksDestroyed = 0;
-    const columns = bricks.length;
-    const rows = bricks[0].length;
-    brickIterator(bricks, function(brick){
-        if (brick.destroyed) { bricksDestroyed += 1; }
-    });
-    if (rows * columns == bricksDestroyed) {
-        createBrickWall();
-    }
-}
-
 function drawBall(ball) {
     drawCircle(ball.x, ball.y, ball.radius, "#0095DD");
 }
@@ -113,7 +101,9 @@ function draw() {
     drawBall(ball);
     drawPaddle();
     drawScore();
-    checkForVictory();
+    if (checkForVictory(bricks)) {
+        bricks = createBrickWall();
+    }
 }
 
 function main() {

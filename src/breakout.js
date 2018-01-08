@@ -78,3 +78,11 @@ function checkForBrickCollision(wall, ball, oldScore) {
   });
   return newScore;
 }
+
+function checkForVictory(wall) {
+  var winner = true;
+  brickIterator(wall, function(brick){
+      if (!brick.destroyed) { winner = false; }
+  });
+  return winner;
+}
