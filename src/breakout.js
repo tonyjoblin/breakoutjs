@@ -41,3 +41,24 @@ function moveBall(ball) {
   ball.x += ball.dx;
   ball.y += ball.dy;
 }
+
+
+function createBrickWall() {
+  const brickRowCount = 3;
+  const brickColumnCount = 5;
+  const brickPadding = 10;
+  const brickOffsetTop = 30;
+  const brickOffsetLeft = 30;
+  const width = 75;
+  const height = 20;
+  var bricks = [];
+  for(c = 0; c < brickColumnCount; c++) {
+      bricks[c] = [];
+      for(r = 0; r < brickRowCount; r++) {
+          var x = c * (width + brickPadding) + brickOffsetLeft;
+          var y = r * (height + brickPadding) + brickOffsetTop;
+          bricks[c][r] = brickFactory(x, y);
+      }
+  }
+  return bricks;
+}

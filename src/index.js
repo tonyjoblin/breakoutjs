@@ -12,30 +12,15 @@ var leftPressed = false;
 
 var score = 0;
 
-var brickRowCount = 3;
-var brickColumnCount = 5;
-var brickPadding = 10;
-var brickOffsetTop = 30;
-var brickOffsetLeft = 30;
+
 
 var bricks = [];
 
-function createBrickWall() {
-    const width = 75;
-    const height = 20;
-    for(c = 0; c < brickColumnCount; c++) {
-        bricks[c] = [];
-        for(r = 0; r < brickRowCount; r++) {
-            var x = c * (width + brickPadding) + brickOffsetLeft;
-            var y = r * (height + brickPadding) + brickOffsetTop;
-            bricks[c][r] = brickFactory(x, y);
-        }
-    }
-}
-
 function brickIterator(wall, func) {
-    for(c = 0; c < brickColumnCount; c++) {
-        for(r = 0; r < brickRowCount; r++) {
+    const columns = wall.length;
+    for(c = 0; c < columns; c++) {
+        const rows = wall[c].length;
+        for(r = 0; r < rows; r++) {
             func(wall[c][r]);
         }
     }
@@ -55,10 +40,12 @@ function checkForBrickCollision() {
 
 function checkForVictory() {
     var bricksDestroyed = 0;
+    const columns = bricks.length;
+    const rows = bricks[0].length;
     brickIterator(bricks, function(brick){
         if (brick.destroyed) { bricksDestroyed += 1; }
     });
-    if (brickRowCount * brickColumnCount == bricksDestroyed) {
+    if (rows * columns == bricksDestroyed) {
         createBrickWall();
     }
 }
@@ -186,7 +173,7 @@ function draw() {
 }
 
 function main() {
-  createBrickWall();
+  bricks = createBrickWall();
   document.addEventListener("keydown", keyDownHandler, false);
   document.addEventListener("keyup", keyUpHandler, false);
   setInterval(draw, 10);

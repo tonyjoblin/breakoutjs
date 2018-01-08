@@ -114,3 +114,13 @@ describe("moveBall", function(){
     expect(ball.y).toBe(98);
   });
 });
+
+describe("createBrickWall", function(){
+  it("returns a 2d array of bricks", function() {
+    var wall = createBrickWall();
+    expect(wall instanceof Array).toBeTruthy();
+    for(var i = 0; i < wall.length; i++) {
+      expect(wall[i] instanceof Array).toBeTruthy();
+    }
+  });
+});
